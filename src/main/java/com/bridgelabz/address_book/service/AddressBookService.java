@@ -9,29 +9,30 @@ import java.util.List;
 
 @Service
 public class AddressBookService implements IAddressBookService {
+    private List<Contact> contactsList = new ArrayList<>();
+
     public List<Contact> getAllContacts() {
-        List<Contact> contactsList = new ArrayList<>();
-        contactsList.add(new Contact(1, new AddressBookDTO()));
         return contactsList;
     }
 
     public Contact getContactById(long contactId, AddressBookDTO addressBookDTO) {
-        Contact contact = null;
-        contact = new Contact(1, addressBookDTO);
-        return contact;
+        return contactsList.get((int) (contactId-1));
     }
 
     public Contact createContact(AddressBookDTO addressBookDTO) {
         Contact contact = null;
-        contact = new Contact(1, addressBookDTO);
+        contact = new Contact(contactsList.size()+1, addressBookDTO);
+        contactsList.add(contact);
         return contact;
     }
 
     public Contact updateContactById(long contactId, AddressBookDTO addressBookDTO) {
-        Contact contact = null;
-        contact = new Contact(1, addressBookDTO);
+        Contact contact = this.getContactById(contactId, addressBookDTO);
+        contactsList.set((int) contactId-1, contact);
         return contact;
     }
 
-    public void deleteContactById(long contactId) {}
+    public void deleteContactById(long contactId) {
+        contactsList.remove((int)contactId-1);
+    }
 }
